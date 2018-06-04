@@ -49,6 +49,8 @@ public:
 	bool ruta_optima(int d, int h);	
 };
 
+int grafo::n_de_nodos = 0;
+
 
 void grafo::add_arco(int d, int h, int w){
 	int c = grafo::n_de_nodos;
