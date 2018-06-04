@@ -26,7 +26,6 @@ class grafo
 {
 	static int n_de_nodos;
 	vector <node> nodos;
-	node  n;
 	arco  a; 
 public:
 	grafo(){
@@ -54,6 +53,7 @@ public:
 void grafo::add_arco(int d, int h, int w){
 	int c = grafo::n_de_nodos;
 	if (d<=c && h<=c){
+
 		arco * a;
 		a->peso = w;
 		for (int i = 0; i < n_de_nodos; ++i)
@@ -79,7 +79,18 @@ int grafo::add_nodo(){
 } 
 
 bool grafo::hay_arco(int d, int h){
-
+		if (nodos[d].ady->peso ==nodos[h].ady->peso){
+			if (nodos[d].ady->destino.info==nodos[h].info)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
 }
 
 bool grafo::hay_camino(int d, int h){
