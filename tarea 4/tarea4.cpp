@@ -1,10 +1,11 @@
 #include <iostream>
-#include <list>
+#include <algorithm>
 #include <sstream>
 #include <vector>
 #include <stdlib.h>  
 #include <ctime>
-#define LIST
+
+
 
 
 using namespace std;
@@ -21,7 +22,7 @@ class arco{
 	int peso;
 	node  *destino;
 	node  *llegada;
-	arco(int peso, node *llegada, node  *destino){
+	arco(int peso, node *llegada, node * destino){
 		this->peso = peso;
 		this->llegada = llegada;
 		this->destino = destino;
@@ -74,33 +75,55 @@ void grafo::add_arco(int d, int h, int w){
 			}
 		}
 		arco arco_d_l = arco(w, llegada, destino);
-		destino->ady.push_back(arco_d_l);
+		arco arco_l_d = arco(w, destino, llegada);
+		destino->ady.push_back(arco_l_d);
 		llegada->ady.push_back(arco_d_l);
 		this->arcos.push_back(arco_d_l);
+		this->arcos.push_back(arco_l_d);
 
 }
 
 int grafo::add_nodo(){
 		node n;
 		this->n_de_nodos++;
-		n.info = n_de_nodos;
+		n.info = n_de_nodos-1;
 		this->nodos.push_back(n);
 		return n_de_nodos;
 } 
 
 bool grafo::hay_arco(int d, int h){
-		/*if (nodos[d].ady->peso ==nodos[h].ady->peso){
-			if (nodos[d].ady->destino.info==nodos[h].info)
-			{
-				return true;
+	bool boolito= false;
+	for (int i = 0; i < this->nodos[d].ady.size(); ++i)
+	{
+		for (int j = 0; j <this->nodos[h].ady.size(); ++j)
+		{
+			if (this->nodos[d].ady[i].peso ==nodos[h].ady[j].peso){
+				if (nodos[d].ady[i].destino->info==nodos[h].info)
+				{
+					boolito= true;
+					return true;
+
+				}
+				else{
+					
+					continue;
+				}
 			}
 			else{
-				return false;
+			 continue;
 			}
+		
 		}
-		else{
-			return false;
-		}*/
+	}
+	if (boolito)
+	{
+		return true;
+	}
+	else{
+		return false;
+	}
+
+		
 }
 
 bool grafo::hay_camino(int d, int h){
@@ -121,8 +144,24 @@ bool grafo::hay_camino(int d, int h){
 	//cout << "| ";
 	visited.push_back(node->info);
 	while (!found_route  && counter < 10){
-		visited.push_back(node->info);
-		
+		while (std::find(visited.begin(), visited.end(), node ->info)!= visited.end())
+		{
+			int pos = rand() % node->ady.size();
+			node =	node->ady[pos].destino;
+			if (node->info== h) {
+				found_route = true;
+				cout << node->info << " |\n";
+				cout << "Founded Route\n" ;
+				break;
+			}
+
+
+		}
+		node = before_node;
+		if (visited.size()==this->n_de_nodos){
+			cout << "ruta no encontrada\n";
+			break;
+		}
 		int pos = rand() % node->ady.size();
 		bool in_vec = false;
 		for(int i = 0; i < visited.size(); i++)
@@ -133,29 +172,34 @@ bool grafo::hay_camino(int d, int h){
 			}	
 		}
 		int looped = 0;
-		while(in_vec && looped < visited.size()){
+		
+		/*while(in_vec && looped < visited.size()){
 			for(int i = 0; i < visited.size(); i++)
 			{
 				if (visited[i] == node->ady[pos].llegada->info | node->ady[pos].llegada->info == node->info) {
+
 					pos = rand() % node->ady.size();
 					looped += 1;
 					if (looped == visited.size()){
-						cout << "\n";
+						cout << pos <<"\n";
 					}
 					continue;
 				}	
 			}
 			break;
-		}
+		}*/
+
 		cout << node->info << " | ";
 		before_node = node;
-		node = node->ady[pos].llegada;
+		node = node->ady[pos].destino;
+		cout << node->info << " | ";
 		visited.push_back(node->info);
-		if (node->info == h) {
+		if (node->info== h) {
 			found_route = true;
 			cout << node->info << " |\n";
 			cout << "Founded Route\n" ;
 		}
+		
 		counter++;
 	}	
 
@@ -213,15 +257,12 @@ int main(int argc, char const *argv[])
 	srand(time (NULL));
 	grafo the_grafo = grafo(6);
 	the_grafo.add_arco(0,1,0);
-	the_grafo.add_arco(1,2,1);
-	the_grafo.add_arco(1,4,0);
-	
-	the_grafo.add_arco(2,3,1);
 	the_grafo.add_arco(3,1,1);
 	the_grafo.add_arco(3,4,0);
 	the_grafo.add_arco(3,5,1);
 	the_grafo.add_arco(0,5,1);
-	the_grafo.hay_camino(0, 4);
+	the_grafo.hay_arco(3,0);
+	the_grafo.hay_camino(0, 3);
 
 	return 0;
 }
