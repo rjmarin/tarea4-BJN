@@ -102,10 +102,8 @@ bool grafo::hay_arco(int d, int h){
 				{
 					boolito= true;
 					return true;
-
 				}
 				else{
-					
 					continue;
 				}
 			}
@@ -144,8 +142,10 @@ bool grafo::hay_camino(int d, int h){
 	//cout << "| ";
 	visited.push_back(node->info);
 	while (!found_route  && counter < 10){
-		while (std::find(visited.begin(), visited.end(), node ->info)!= visited.end())
-		{
+		//esto reemplaza el otro while corre mejor pero igual se cae cuando no existe arco
+		// lo estoy tratando de arreglar
+		
+		while (std::find(visited.begin(), visited.end(), node ->info)!= visited.end()){
 			int pos = rand() % node->ady.size();
 			node =	node->ady[pos].destino;
 			if (node->info== h) {
@@ -158,7 +158,7 @@ bool grafo::hay_camino(int d, int h){
 
 		}
 		node = before_node;
-		if (visited.size()==this->n_de_nodos){
+		if (visited.size()==this->n_de_nodos){//par que no dara tanta vuelta
 			cout << "ruta no encontrada\n";
 			break;
 		}
