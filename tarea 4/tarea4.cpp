@@ -139,7 +139,7 @@ bool grafo::hay_camino(int d, int h){
 	}
 	vector <int> visited;
 	visited.push_back(node->info);
-	while (!found_route  && counter < 10){
+	while (!found_route  && counter < n_de_nodos){
 
 		while (std::find(visited.begin(), visited.end(), node ->info)!= visited.end()){
 			if (!node->ady.size()==0)
@@ -150,11 +150,10 @@ bool grafo::hay_camino(int d, int h){
 				{
 					visited.push_back(node -> info);	
 				}
-				cout << "|" << node ->info; 
+				
 				if (node->info== h) {
 					found_route = true;
-					cout << node->info << " |\n";
-					cout << "Founded Route\n" ;
+					return true;
 					break;
 				}
 			}
@@ -165,7 +164,7 @@ bool grafo::hay_camino(int d, int h){
 		}
 		node = before_node;
 		if (visited.size()==this->n_de_nodos | node -> ady.size()==0){//par que no dara tanta vuelta
-			cout << "ruta no encontrada\n";
+			return false;
 			break;
 		}
 		counter++;
