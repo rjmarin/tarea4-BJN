@@ -16,9 +16,10 @@ class grafo
 public:
 	grafo();
 	grafo(int a);
+	~grafo(){
+	}
 	void add_arco(int d, int h, int w);
 	int add_nodo();
 	bool hay_arco(int d, int h);
 	bool hay_camino(int d, int h);
-	bool ruta_optima(int d, int h);	
 };

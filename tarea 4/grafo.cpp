@@ -2,7 +2,6 @@
 
 
 grafo::grafo(){
-		grafo * primer = new grafo;
 		n_de_nodos=0;
 
 	}
@@ -51,9 +50,11 @@ int grafo::add_nodo(){
 
 bool grafo::hay_arco(int d, int h){
 	bool boolito= false;
-	for (int i = 0; i < this->nodos[d].ady.size(); ++i)
+	int first_size = this->nodos[d].ady.size();
+	for (int i = 0; i < first_size ; ++i)
 	{
-		for (int j = 0; j <this->nodos[h].ady.size(); ++j)
+		int second_size = this->nodos[h].ady.size();
+		for (int j = 0; j < second_size; ++j)
 		{
 			if (this->nodos[d].ady[i].peso ==nodos[h].ady[j].peso){
 				if (nodos[d].ady[i].destino->info==nodos[h].info)
@@ -122,14 +123,18 @@ bool grafo::hay_camino(int d, int h){
 			
 		}
 		node = before_node;
-		if (visited.size()==this->n_de_nodos | node -> ady.size()==0){//par que no dara tanta vuelta
+		int size1 = visited.size();
+		int size2 = node -> ady.size();
+		if ( (size1 == this->n_de_nodos) | (size2 == 0)){//par que no dara tanta vuelta
 			return false;
 			break;
 		}
 		counter++;
+	}
+	return false;
 }
 
-int main(int argc, char const *argv[])
+int main()
 {
 	/* code */
 	return 0;
